@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>EVE Online Ore Calculator</title>
+<link rel="stylesheet" type="text/css" href="global.css" />
+<script type="text/javascript" src="orecalc.js"></script>
+</head>
+<body onLoad="recalculate()">
+<div id="container">
+	<h1>EVE Online Ore Calculator</h1>
+    <p id="page-status" class="ok">Ready.</p>
+    <h2>Prices</h2>
+    <form action="javascript:recalculate()">
+    	<p class="nofloat"><a class="button" id="populate-prices" href="javascript:populateMarketData()">Get Prices from EVE Central</a>&nbsp;for region&nbsp;<select id="eve-central-region">
+        	<option value="10000001">Derelik</option>
+            <option value="10000002" selected="selected">The Forge</option>
+            <option value="10000003">Vale of the Silent</option>
+            <option value="10000004">UUA-F4</option>
+            <option value="10000005">Detorid</option>
+            <option value="10000006">Wicked Creek</option>
+            <option value="10000007">Cache</option>
+            <option value="10000008">Scalding Pass</option>
+            <option value="10000009">Insmother</option>
+            <option value="10000010">Tribute</option>
+            <option value="10000011">Great Wildlands</option>
+            <option value="10000012">Curse</option>
+            <option value="10000013">Malpais</option>
+            <option value="10000014">Catch</option>
+            <option value="10000015">Venal</option>
+            <option value="10000016">Lonetrek</option>
+            <option value="10000017">J7HZ-F</option>
+            <option value="10000018">The Spire</option>
+            <option value="10000019">A821-A</option>
+            <option value="10000020">Tash-Murkon</option>
+            <option value="10000021">Outer Passage</option>
+            <option value="10000022">Stain</option>
+            <option value="10000023">Pure Blind</option>
+            <option value="10000025">Immensea</option>
+            <option value="10000027">Etherium Reach</option>
+            <option value="10000028">Molden Heath</option>
+            <option value="10000029">Geminate</option>
+            <option value="10000030">Heimatar</option>
+            <option value="10000031">Impass</option>
+            <option value="10000032">Sinq Laison</option>
+            <option value="10000033">The Citadel</option>
+            <option value="10000034">The Kalevala Expanse</option>
+            <option value="10000035">Deklein</option>
+            <option value="10000036">Devoid</option>
+            <option value="10000037">Everyshore</option>
+            <option value="10000038">The Bleak Lands</option>
+            <option value="10000039">Esoteria</option>
+            <option value="10000040">Oasa</option>
+            <option value="10000041">Syndicate</option>
+            <option value="10000042">Metropolis</option>
+            <option value="10000043">Domain</option>
+            <option value="10000044">Solitude</option>
+            <option value="10000045">Tenal</option>
+            <option value="10000046">Fade</option>
+            <option value="10000047">Providence</option>
+            <option value="10000048">Placid</option>
+            <option value="10000049">Khanid</option>
+            <option value="10000050">Querious</option>
+            <option value="10000051">Cloud Ring</option>
+            <option value="10000052">Kador</option>
+            <option value="10000053">Cobalt Edge</option>
+            <option value="10000054">Aridia</option>
+            <option value="10000055">Branch</option>
+            <option value="10000056">Feythabolis</option>
+            <option value="10000057">Outer Ring</option>
+            <option value="10000058">Fountain</option>
+            <option value="10000059">Paragon Soul</option>
+            <option value="10000060">Delve</option>
+            <option value="10000061">Tenerifis</option>
+            <option value="10000062">Omist</option>
+            <option value="10000063">Period Basis</option>
+            <option value="10000064">Essence</option>
+            <option value="10000065">Kor-Azor</option>
+            <option value="10000066">Perrigen Falls</option>
+            <option value="10000067">Genesis</option>
+            <option value="10000068">Verge Vendor</option>
+            <option value="10000069">Black Rise</option>
+        </select>&nbsp;using&nbsp;<span style="border: 1px dotted #ccc;"><input type="radio" name="price-type" id="use-max" value="max" /> <label for="use-max">max</label> <input type="radio" name="price-type" id="use-avg" value="avg" checked="checked" /> <label for="use-avg">avg</label> <input type="radio" name="price-type" id="use-min" value="min" /> <label for="use-min">min</label> </span></p>
+    	<fieldset id="mineral-prices">
+            <p><label for="tritanium-price">Tritanium</label><br /><input type="text" id="tritanium-price" /></p>
+            <p><label for="pyerite-price">Pyerite</label><br /><input type="text" id="pyerite-price" /></p>
+            <p><label for="mexallon-price">Mexallon</label><br /><input type="text" id="mexallon-price" /></p>
+            <p><label for="isogen-price">Isogen</label><br /><input type="text" id="isogen-price" /></p>
+            <p><label for="nocxium-price">Nocxium</label><br /><input type="text" id="nocxium-price" /></p>
+            <p><label for="zydrine-price">Zydrine</label><br /><input type="text" id="zydrine-price" /></p>
+            <p><label for="megacyte-price">Megacyte</label><br /><input type="text" id="megacyte-price" /></p>
+            <p><label for="morphite-price">Morphite</label><br /><input type="text" id="morphite-price" /></p>
+        </fieldset>
+        <fieldset id="ore-prices">
+        	<p><label for="veldspar-price">Veldspar</label><br /><input type="text" id="veldspar-price" /></p>
+            <p><label for="scordite-price">Scordite</label><br /><input type="text" id="scordite-price" /></p>
+            <p><label for="pyroxeres-price">Pyroxeres</label><br /><input type="text" id="pyroxeres-price" /></p>
+            <p><label for="plagioclase-price">Plagioclase</label><br /><input type="text" id="plagioclase-price" /></p>
+            <p><label for="omber-price">Omber</label><br /><input type="text" id="omber-price" /></p>
+            <p><label for="kernite-price">Kernite</label><br /><input type="text" id="kernite-price" /></p>
+            <p><label for="jaspet-price">Jaspet</label><br /><input type="text" id="jaspet-price" /></p>
+            <p><label for="hemorphite-price">Hemorphite</label><br /><input type="text" id="hemorphite-price" /></p>
+            <p><label for="hedbergite-price">Hedbergite</label><br /><input type="text" id="hedbergite-price" /></p>
+            <p><label for="gneiss-price">Gneiss</label><br /><input type="text" id="gneiss-price" /></p>
+            <p><label for="darkochre-price">Dark Ochre</label><br /><input type="text" id="darkochre-price" /></p>
+            <p><label for="crokite-price">Crokite</label><br /><input type="text" id="crokite-price" /></p>
+            <p><label for="spodumain-price">Spodumain</label><br /><input type="text" id="spodumain-price" /></p>
+            <p><label for="bistot-price">Bistot</label><br /><input type="text" id="bistot-price" /></p>
+            <p><label for="arkonor-price">Arkonor</label><br /><input type="text" id="arkonor-price" /></p>
+            <p><label for="mercoxit-price">Mercoxit</label><br /><input type="text" id="mercoxit-price" /></p>
+        </fieldset>
+        <p class="nofloat"><a href="javascript:toggleAdvanced()" class="button">Toggle Advanced Options</a></p>
+        <div id="advanced">
+            <br style="clear:both;" />
+            <fieldset id="skills">
+                <h2>Skills [+37.5%]</h2>
+                <p class="nofloat">Enter your skill levels in the various refining skills here.</p>
+                <p><label for="refining-skill"><br />Refining</label>&nbsp;<input type="text" id="refining-skill" value="0" /></p>
+                <p><label for="efficiency-skill">Refinery Efficiency</label>&nbsp;<input type="text" id="efficiency-skill" value="0" /></p>
+                <br style="clear:both;" />
+                <p><label for="veldspar-skill">Veldspar Processing</label>&nbsp;<input type="text" id="veldspar-skill" value="0" /></p>
+                <p><label for="scordite-skill">Scordite Processing</label>&nbsp;<input type="text" id="scordite-skill" value="0" /></p>
+                <p><label for="pyroxeres-skill">Pyroxeres Processing</label>&nbsp;<input type="text" id="pyroxeres-skill" value="0" /></p>
+                <p><label for="plagioclase-skill">Plagioclase Processing</label>&nbsp;<input type="text" id="plagioclase-skill" value="0" /></p>
+                <p><label for="omber-skill">Omber Processing</label>&nbsp;<input type="text" id="omber-skill" value="0" /></p>
+                <p><label for="kernite-skill">Kernite Processing</label>&nbsp;<input type="text" id="kernite-skill" value="0" /></p>
+                <p><label for="jaspet-skill">Jaspet Processing</label>&nbsp;<input type="text" id="jaspet-skill" value="0" /></p>
+                <p><label for="hemorphite-skill">Hemorphite Processing</label>&nbsp;<input type="text" id="hemorphite-skill" value="0" /></p>
+                <p><label for="hedbergite-skill">Hedbergite Processing</label>&nbsp;<input type="text" id="hedbergite-skill" value="0" /></p>
+                <p><label for="gneiss-skill">Gneiss Processing</label>&nbsp;<input type="text" id="gneiss-skill" value="0" /></p>
+                <p><label for="darkochre-skill">Dark Ochre Processing</label>&nbsp;<input type="text" id="darkochre-skill" value="0" /></p>
+                <p><label for="crokite-skill">Crokite Processing</label>&nbsp;<input type="text" id="crokite-skill" value="0" /></p>
+                <p><label for="spodumain-skill">Spodumain Processing</label>&nbsp;<input type="text" id="spodumain-skill" value="0" /></p>
+                <p><label for="bistot-skill"><br />Bistot Processing</label>&nbsp;<input type="text" id="bistot-skill" value="0" /></p>
+                <p><label for="arkonor-skill">Arkonor Processing</label>&nbsp;<input type="text" id="arkonor-skill" value="0" /></p>
+                <p><label for="mercoxit-skill">Mercoxit Processing</label>&nbsp;<input type="text" id="mercoxit-skill" value="0" /></p>
+            </fieldset>
+            <fieldset id="facility">
+                <h2>Facility [+45%]</h2>
+                <p><label for="facility-efficiency" title="This value represents the base efficiency of the reprocessing facility.">Facility Efficiency</label>&nbsp;<input type="text" id="facility-efficiency" value="50%" /></p>
+                <p><label for="facility-standing" title="This value affects the tax you pay to the station owner. Standings of 6.67 or greater result in a tax rate of 0%.">Facility Standing</label>&nbsp;<input type="text" id="facility-standing" value="0" /></p>
+            </fieldset>
+        </div>
+        <p class="nofloat"><a class="button" href="javascript:recalculate()">Recalculate</a></p>
+    </form>
+    <hr />
+    <h1>Ores</h1>
+    <h2 id="estimated-efficiency">Estimated Base Refining Efficiency: 100%</h2>
+    <table id="ores" class="sortable">
+    	<thead>
+	        <tr><td><noscript>JavaScript must be enabled to use this tool.</noscript></td></tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    
+    <h1>Drone Compounds</h1>
+    <table id="compounds" class="sortable">
+    	<thead>
+	        <tr><td><noscript>JavaScript must be enabled to use this tool.</noscript></td></tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+</body>
+<script type="text/javascript" src="sortable.js"></script>
+</html>
