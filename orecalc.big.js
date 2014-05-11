@@ -341,27 +341,24 @@ function recalculate()
 	{
 		var mineral = minerals[j];
 		// Ores
-		for(var i = 0; i < ores.length; i++)
+		for(var o in ores)
 		{
-			if(ores[i][mineral] === undefined)
+			if(ores[o][mineral] === undefined)
 			{
-				ores[i][mineral] = 0;
+				ores[o][mineral] = 0;
 			}
-			ores[i][mineral] = Math.ceil(ores[i][mineral] * calculate_efficiency(ores[i].name));
-			// Calculate gross and net price
-			var price = getNiceNumber(ores[i].name.toLowerCase() + "-price");
-			calculateVolumetricPrices(market, ores[i]);
-			//ores[i].rawPricePerm3 = moneyFormat(price / ores[i].volume);
-			//ores[i].refinedPricePerm3 = moneyFormat(calculateISKperm3(market, ores[i]));
+			ores[o][mineral] = Math.ceil(ores[o][mineral] * calculate_efficiency(ores[o].name));
+			// Calculate raw and refined prices
+			calculateVolumetricPrices(market, ores[o]);
 		}
 		// Compounds
-		for(var i = 0; i < compounds.length; i++)
+		for(var c in compounds)
 		{
-			if(compounds[i][mineral] === undefined)
+			if(compounds[c][mineral] === undefined)
 			{
-				compounds[i][mineral] = 0;
+				compounds[c][mineral] = 0;
 			}
-			compounds[i].pricePerm3 = moneyFormat(calculateISKperm3(market, compounds[i]));
+			compounds[c].pricePerm3 = moneyFormat(calculateISKperm3(market, compounds[c]));
 		}
 	}
 	
