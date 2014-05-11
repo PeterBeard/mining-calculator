@@ -155,7 +155,7 @@ function populateMarketData()
 	// The URL of the API
 	var api_url = "http://api.eve-central.com/api/marketstat";
 	// The User Agent string to use
-	var user_agent = "JavaScript/Ore Calculator 0.1dev";
+	var user_agent = "JavaScript/Ore Calculator 0.2";
 
 	// Get an XHR object
 	var xmlhttp = new XMLHttpRequest();
