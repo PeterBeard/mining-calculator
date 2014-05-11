@@ -7,6 +7,70 @@ function get_mineral_names()
 	return new Array("tritanium","pyerite","mexallon","isogen","nocxium","zydrine","megacyte","morphite");
 }
 
+// Return an array of objects with type IDs and sanitized names
+function get_type_ids()
+{
+	return new Array(
+	{id:34,name:"tritanium"},
+	{id:35,name:"pyerite"},
+	{id:36,name:"mexallon"},
+	{id:37,name:"isogen"},
+	{id:38,name:"nocxium"},
+	{id:39,name:"zydrine"},
+	{id:40,name:"megacyte"},
+	{id:11399,name:"morphite"},
+
+	{id:1230,name:"veldspar"},
+	{id:17470,name:"concentrated-veldspar"},
+	{id:17471,name:"dense-veldspar"},
+	{id:1228,name:"scordite"},
+	{id:17463,name:"condensed-scordite"},
+	{id:17464,name:"massive-scordite"},
+	{id:1224,name:"pyroxeres"},
+	{id:17459,name:"solid-pyroxeres"},
+	{id:17460,name:"viscous-pyroxeres"},
+	{id:18,name:"plagioclase"},
+	{id:17455,name:"azure-plagioclase"},
+	{id:17456,name:"rich-plagioclase"},
+	{id:1227,name:"omber"},
+	{id:17867,name:"silvery-omber"},
+	{id:17868,name:"golden-omber"},
+	{id:20,name:"kernite"},
+	{id:17452,name:"luminous-kernite"},
+	{id:17453,name:"fiery-kernite"},
+	{id:1226,name:"jaspet"},
+	{id:17448,name:"pure-jaspet"},
+	{id:17449,name:"pristine-jaspet"},
+	{id:1231,name:"hemorphite"},
+	{id:17444,name:"vivid-hemorphite"},
+	{id:17445,name:"radiant-hemorphite"},
+	{id:21,name:"hedbergite"},
+	{id:17440,name:"vitric-hedbergite"},
+	{id:17441,name:"glazed-hedbergite"},
+	{id:1229,name:"gneiss"},
+	{id:17865,name:"iridescent-gneiss"},
+	{id:17866,name:"prismatic-gneiss"},
+	{id:1232,name:"dark-ochre"},
+	{id:17436,name:"onyx-dark-ochre"},
+	{id:17437,name:"obsidian-dark-ochre"},
+	{id:1225,name:"crokite"},
+	{id:17432,name:"sharp-crokite"},
+	{id:17433,name:"crystalline-crokite"},
+	{id:19,name:"spodumain"},
+	{id:17466,name:"bright-spodumain"},
+	{id:17467,name:"gleaming-spodumain"},
+	{id:1223,name:"bistot"},
+	{id:17428,name:"triclinic-bistot"},
+	{id:17429,name:"monoclinic-bistot"},
+	{id:22,name:"arkonor"},
+	{id:17425,name:"crimson-arkonor"},
+	{id:17426,name:"prime-arkonor"},
+	{id:11396,name:"mercoxit"},
+	{id:17869,name:"magma-mercoxit"},
+	{id:17870,name:"vitreous-mercoxit"}
+	);
+}
+
 // Return an array of objects containing information about ores
 function get_ore_objects()
 {

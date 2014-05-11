@@ -1,3 +1,5 @@
+/* This file depends on items.js and will not work unless it is loaded first. */
+
 // JavaScript Document
 "use strict";
 
@@ -148,6 +150,11 @@ function findElement(elements, id)
 // Get market data from eve-central.com
 function populateMarketData()
 {
+	// The URL of the API
+	var api_url = "http://api.eve-central.com/api/marketstat";
+	// The User Agent string to use
+	var user_agent = "JavaScript/Ore Calculator 0.1dev";
+
 	// Get an XHR object
 	var xmlhttp = new XMLHttpRequest();
 	// Parse the XML the server sends back and use the values to populate the prices form
@@ -185,66 +192,8 @@ function populateMarketData()
 			updateStatus("An error occurred while loading price data (status " + xmlhttp.status + " returned)","error");
 		}
 	};
-	// Build our query
-	var types = new Array(
-	{id:34,name:"tritanium"},
-	{id:35,name:"pyerite"},
-	{id:36,name:"mexallon"},
-	{id:37,name:"isogen"},
-	{id:38,name:"nocxium"},
-	{id:39,name:"zydrine"},
-	{id:40,name:"megacyte"},
-	{id:11399,name:"morphite"},
-
-	{id:1230,name:"veldspar"},
-	{id:17470,name:"concentrated-veldspar"},
-	{id:17471,name:"dense-veldspar"},
-	{id:1228,name:"scordite"},
-	{id:17463,name:"condensed-scordite"},
-	{id:17464,name:"massive-scordite"},
-	{id:1224,name:"pyroxeres"},
-	{id:17459,name:"solid-pyroxeres"},
-	{id:17460,name:"viscous-pyroxeres"},
-	{id:18,name:"plagioclase"},
-	{id:17455,name:"azure-plagioclase"},
-	{id:17456,name:"rich-plagioclase"},
-	{id:1227,name:"omber"},
-	{id:17867,name:"silvery-omber"},
-	{id:17868,name:"golden-omber"},
-	{id:20,name:"kernite"},
-	{id:17452,name:"luminous-kernite"},
-	{id:17453,name:"fiery-kernite"},
-	{id:1226,name:"jaspet"},
-	{id:17448,name:"pure-jaspet"},
-	{id:17449,name:"pristine-jaspet"},
-	{id:1231,name:"hemorphite"},
-	{id:17444,name:"vivid-hemorphite"},
-	{id:17445,name:"radiant-hemorphite"},
-	{id:21,name:"hedbergite"},
-	{id:17440,name:"vitric-hedbergite"},
-	{id:17441,name:"glazed-hedbergite"},
-	{id:1229,name:"gneiss"},
-	{id:17865,name:"iridescent-gneiss"},
-	{id:17866,name:"prismatic-gneiss"},
-	{id:1232,name:"dark-ochre"},
-	{id:17436,name:"onyx-dark-ochre"},
-	{id:17437,name:"obsidian-dark-ochre"},
-	{id:1225,name:"crokite"},
-	{id:17432,name:"sharp-crokite"},
-	{id:17433,name:"crystalline-crokite"},
-	{id:19,name:"spodumain"},
-	{id:17466,name:"bright-spodumain"},
-	{id:17467,name:"gleaming-spodumain"},
-	{id:1223,name:"bistot"},
-	{id:17428,name:"triclinic-bistot"},
-	{id:17429,name:"monoclinic-bistot"},
-	{id:22,name:"arkonor"},
-	{id:17425,name:"crimson-arkonor"},
-	{id:17426,name:"prime-arkonor"},
-	{id:11396,name:"mercoxit"},
-	{id:17869,name:"magma-mercoxit"},
-	{id:17870,name:"vitreous-mercoxit"}
-	);
+	// Get the type IDs and names
+	var types = get_type_ids();
 	// Build POST query
 	var post_data = "";
 	for(var i = 0; i < types.length; i++)
@@ -253,10 +202,10 @@ function populateMarketData()
 	}
 	post_data += "regionlimit=" + document.getElementById("eve-central-region").value;
 	
-	// Connect to the API server and send some headers a POST request
+	// Connect to the API server and send some headers and a POST request
 	updateStatus("Loading Price Data...","busy");
-	xmlhttp.open("POST","http://api.eve-central.com/api/marketstat",true);
-	xmlhttp.setRequestHeader("User-Agent","JavaScript/Ore Calculator 0.1dev");
+	xmlhttp.open("POST",api_url,true);
+	xmlhttp.setRequestHeader("User-Agent",user_agent);
 	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xmlhttp.send(post_data);
 }
