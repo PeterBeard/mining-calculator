@@ -73,7 +73,7 @@ function getNiceNumber(element_id)
 	var str_value = element.value;
 	// Check for percentages
 	var p = str_value.indexOf("%");
-	if(p != -1)
+	if(p !== -1)
 	{
 		str_value = str_value.substr(0,p) / 100;
 	}
@@ -137,9 +137,11 @@ function getPrices()
 // Find an XML element by ID -- identical to .getElementById except working
 function findElement(elements, id)
 {
+	// Convert id to string
+	id = String(id);
 	for(var i = 0; i < elements.length; i++)
 	{
-		if(elements[i].id == id)
+		if(elements[i].id === id)
 		{
 			return elements[i];
 		}
@@ -160,7 +162,7 @@ function populateMarketData()
 	// Parse the XML the server sends back and use the values to populate the prices form
 	xmlhttp.onreadystatechange = function()
 	{
-		if(xmlhttp.readyState == 4 && xmlhttp.status == 200)
+		if(xmlhttp.readyState === 4 && xmlhttp.status === 200)
 		{
 			var data = xmlhttp.responseXML.getElementsByTagName("marketstat")[0];
 			var type_data = data.getElementsByTagName("type");
@@ -188,7 +190,7 @@ function populateMarketData()
 				document.getElementById(types[i].name + "-price").value = price;
 			}
 			updateStatus("Prices Updated","ok");
-		} else if(xmlhttp.readyState == 4) {
+		} else if(xmlhttp.readyState === 4) {
 			updateStatus("An error occurred while loading price data (status " + xmlhttp.status + " returned)","error");
 		}
 	};
