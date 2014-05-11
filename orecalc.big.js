@@ -178,7 +178,6 @@ function populateMarketData()
 				{
 					price = element.getElementsByTagName("buy")[0].getElementsByTagName(price_type)[0].textContent;
 				}
-				console.log(types[i]);
 				document.getElementById(types[i].name + "-price").value = price;
 			}
 			updateStatus("Prices Updated","ok");
@@ -187,33 +186,6 @@ function populateMarketData()
 		}
 	};
 	// Build our query
-	/* Type IDs
-		34          Tritanium
-		35          Pyerite
-		36          Mexallon
-		37          Isogen
-		38          Nocxium
-		39          Zydrine
-		40          Megacyte
-		11399       Morphite
-		...
-		1223        Bistot
-		1224        Pyroxeres
-		1225        Crokite
-		1226        Jaspet
-		1227        Omber
-		1228        Scordite
-		1229        Gneiss
-		1230        Veldspar
-		1231        Hemorphite
-		1232        Dark Ochre
-		18          Plagioclase
-		19          Spodumain
-		20          Kernite
-		21          Hedbergite
-		22          Arkonor
-		11396       Mercoxit
-	*/
 	var types = new Array(
 	{id:34,name:"tritanium"},
 	{id:35,name:"pyerite"},
