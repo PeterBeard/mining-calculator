@@ -53,7 +53,7 @@ function ts_makeSortable(t) {
 function ts_getInnerText(el) {
 	if (typeof el == "string") return el;
 	if (typeof el == "undefined") { return el };
-	if (el.innerText) return el.innerText;	//Not needed but it is faster
+	if (el.innerHTML) return el.innerHTML;	//Not needed but it is faster
 	var str = "";
 	
 	var cs = el.childNodes;
