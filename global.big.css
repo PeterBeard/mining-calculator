@@ -14,6 +14,10 @@ h1,h2 {
 h2 {
 	font-size: 2em;
 }
+fieldset h2 {
+	margin-top: 0;
+}
+
 #page-status {
 	border-radius: 5px;
 	font-size: 1.5em;
@@ -91,9 +95,49 @@ hr {
 	border: 1px dotted #ccc;
 }
 
+sup {
+	font-size: 0.6em;
+	vertical-align: super;
+}
+
+/* Tabs */
+#tablist li {
+	float: left;
+}
+#tablist li a {
+	background: #ccc none;
+	background: linear-gradient(to bottom, #e6e6e6 0%, #ccc 100%);
+	border-top-left-radius: 7px;
+	border-top-right-radius: 7px;
+	color: #444;
+	display: block;
+	font-size: 1.2em;
+	margin: 0 0.5em;
+	padding: 0.5em 2em;
+	text-decoration: none;
+	text-shadow: 1px 2px 0 rgba(255,255,255,0.4);
+}
+#tablist li a:hover {
+	background: #33f none;
+	background: linear-gradient(to bottom, #55f 0%, #33f 100%);
+	color: #fff;
+	text-shadow: none;
+}
+
+.tab.visible {
+	display: block;
+}
+.tab.hidden {
+	display: none;
+}
+
 /* Table styles */
 table {
 	width: 100%;
+}
+table thead {
+	border-bottom: 3px solid #ffc;
+	font-weight: bold;
 }
 table td, table th {
 	margin: 0;
@@ -109,12 +153,32 @@ table td:nth-child(2n) {
 table tr:nth-child(2n) td:nth-child(2n) {
 	background: #e3e3e3 none;
 }
+table tbody:nth-child(2n) {
+	background: #ffc none;
+	font-weight: bold;
+}
+table tbody:nth-child(2n) tr:nth-child(2n) {
+	background: #e9e9a9 none;
+}
+table tbody:nth-child(2n) td:nth-child(2n) {
+	background: #f9f9b9 none;
+}
+table tbody:nth-child(2n) tr:nth-child(2n) td:nth-child(2n) {
+	background: #e3e3a3 none;
+}
 /* Row hover */
 table tr:hover {
 	background: #33d none;
 	color: #fff;
 }
+table tbody:nth-child(2n) tr:hover {
+	background: #33d none;
+	color: #fff;
+}
 table tr:hover td:nth-child(2n) {
+	background: #2a2ad7 none;
+}
+table tbody:nth-child(2n) tr:hover td:nth-child(2n) {
 	background: #2a2ad7 none;
 }
 /* Sorting styles */

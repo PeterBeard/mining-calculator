@@ -1,6 +1,31 @@
 // JavaScript Document
 "use strict";
 
+// Make the selected tab visible and hide the others
+function changeTab(tabid)
+{
+	var tab = document.getElementById(tabid);
+	var tabs = document.getElementsByClassName("tab");
+	// Hide all tabs
+	if(tabs)
+	{
+		for(var t in tabs)
+		{
+			if(tabs[t].classList)
+			{
+				tabs[t].classList.remove("visible");
+				tabs[t].classList.add("hidden");
+			}
+		}
+	}
+	// Show the selected one
+	if(tab)
+	{
+		tab.classList.add("visible");
+		tab.classList.remove("hidden");
+	}
+}
+
 // Calculate the ISK per cubic meter for a given ore using the market prices provided by the user
 function calculateISKperm3(market, ore)
 {
@@ -18,6 +43,17 @@ function calculateISKperm3(market, ore)
 	value /= ore.batchsize;
 
 	return value;
+}
+
+// Calculate the prices for an ore and its variants, saving the values to the ore object
+function calculateVolumetricPrices(market, ore)
+{
+	// Calculate the base price
+	ore.refinedPricePerm3 = moneyFormat(calculateISKperm3(market, ore));
+	// Get the raw prices for the base ore and the variants
+	ore.rawPricePerm3 = moneyFormat(getNiceNumber(ore.name.toLowerCase() + "-price") / ore.volume);
+	ore.rawPlus5PricePerm3 = moneyFormat(getNiceNumber(ore.plus5.toLowerCase() + "-" + ore.name.toLowerCase() + "-price") / ore.volume);
+	ore.rawPlus10PricePerm3 = moneyFormat(getNiceNumber(ore.plus10.toLowerCase() + "-" + ore.name.toLowerCase() + "-price") / ore.volume);
 }
 
 // Make sure the value returned from a form is a numeric type
@@ -137,12 +173,12 @@ function populateMarketData()
 			for(var i = 0; i < types.length; i++)
 			{
 				var element = findElement(type_data, types[i].id);
+				var price = 0;
 				if(element)
 				{
-					var price = element.getElementsByTagName("buy")[0].getElementsByTagName(price_type)[0].textContent;
-				} else {
-					var price = 0;
+					price = element.getElementsByTagName("buy")[0].getElementsByTagName(price_type)[0].textContent;
 				}
+				console.log(types[i]);
 				document.getElementById(types[i].name + "-price").value = price;
 			}
 			updateStatus("Prices Updated","ok");
@@ -179,102 +215,64 @@ function populateMarketData()
 		11396       Mercoxit
 	*/
 	var types = new Array(
-	{
-		id:34,
-		name:"tritanium"
-	},
-	{
-		id:35,
-		name:"pyerite"
-	},
-	{
-		id:36,
-		name:"mexallon"
-	},
-	{
-		id:37,
-		name:"isogen"
-	},
-	{
-		id:38,
-		name:"nocxium"
-	},
-	{
-		id:39,
-		name:"zydrine"
-	},
-	{
-		id:40,
-		name:"megacyte"
-	},
-	{
-		id:11399,
-		name:"morphite"
-	},
-	{
-		id:1223,
-		name:"bistot"
-	},
-	{
-		id:1224,
-		name:"pyroxeres"
-	},
-	{
-		id:1225,
-		name:"crokite"
-	},
-	{
-		id:1226,
-		name:"jaspet"
-	},
-	{
-		id:1227,
-		name:"omber"
-	},
-	{
-		id:1228,
-		name:"scordite"
-	},
-	{
-		id:1229,
-		name:"gneiss"
-	},
-	{
-		id:1230,
-		name:"veldspar"
-	},
-	{
-		id:1231,
-		name:"hemorphite"
-	},
-	{
-		id:1232,
-		name:"darkochre"
-	},
-	{
-		id:18,
-		name:"plagioclase"
-	},
-	{
-		id:19,
-		name:"spodumain"
-	},
-	{
-		id:20,
-		name:"kernite"
-	},
-	{
-		id:21,
-		name:"hedbergite"
-	},
-	{
-		id:22,
-		name:"arkonor"
-	},
-	{
-		id:11396,
-		name:"mercoxit"
-	});
+	{id:34,name:"tritanium"},
+	{id:35,name:"pyerite"},
+	{id:36,name:"mexallon"},
+	{id:37,name:"isogen"},
+	{id:38,name:"nocxium"},
+	{id:39,name:"zydrine"},
+	{id:40,name:"megacyte"},
+	{id:11399,name:"morphite"},
+
+	{id:1230,name:"veldspar"},
+	{id:17470,name:"concentrated-veldspar"},
+	{id:17471,name:"dense-veldspar"},
+	{id:1228,name:"scordite"},
+	{id:17463,name:"condensed-scordite"},
+	{id:17464,name:"massive-scordite"},
+	{id:1224,name:"pyroxeres"},
+	{id:17459,name:"solid-pyroxeres"},
+	{id:17460,name:"viscous-pyroxeres"},
+	{id:18,name:"plagioclase"},
+	{id:17455,name:"azure-plagioclase"},
+	{id:17456,name:"rich-plagioclase"},
+	{id:1227,name:"omber"},
+	{id:17867,name:"silvery-omber"},
+	{id:17868,name:"golden-omber"},
+	{id:20,name:"kernite"},
+	{id:17452,name:"luminous-kernite"},
+	{id:17453,name:"fiery-kernite"},
+	{id:1226,name:"jaspet"},
+	{id:17448,name:"pure-jaspet"},
+	{id:17449,name:"pristine-jaspet"},
+	{id:1231,name:"hemorphite"},
+	{id:17444,name:"vivid-hemorphite"},
+	{id:17445,name:"radiant-hemorphite"},
+	{id:21,name:"hedbergite"},
+	{id:17440,name:"vitric-hedbergite"},
+	{id:17441,name:"glazed-hedbergite"},
+	{id:1229,name:"gneiss"},
+	{id:17865,name:"iridescent-gneiss"},
+	{id:17866,name:"prismatic-gneiss"},
+	{id:1232,name:"dark-ochre"},
+	{id:17436,name:"onyx-dark-ochre"},
+	{id:17437,name:"obsidian-dark-ochre"},
+	{id:1225,name:"crokite"},
+	{id:17432,name:"sharp-crokite"},
+	{id:17433,name:"crystalline-crokite"},
+	{id:19,name:"spodumain"},
+	{id:17466,name:"bright-spodumain"},
+	{id:17467,name:"gleaming-spodumain"},
+	{id:1223,name:"bistot"},
+	{id:17428,name:"triclinic-bistot"},
+	{id:17429,name:"monoclinic-bistot"},
+	{id:22,name:"arkonor"},
+	{id:17425,name:"crimson-arkonor"},
+	{id:17426,name:"prime-arkonor"},
+	{id:11396,name:"mercoxit"},
+	{id:17869,name:"magma-mercoxit"},
+	{id:17870,name:"vitreous-mercoxit"}
+	);
 	// Build POST query
 	var post_data = "";
 	for(var i = 0; i < types.length; i++)
@@ -291,326 +289,46 @@ function populateMarketData()
 	xmlhttp.send(post_data);
 }
 
-// Toggle the advanced settings
-function toggleAdvanced()
+// Calculate the player's base efficiency
+function calculate_player_efficiency()
 {
-	if(document.getElementById("advanced").style.display != "block")
-	{
-		document.getElementById("advanced").style.display = "block";
-	} else {
-		document.getElementById("advanced").style.display = "none";
-	}
+	var refining_skill = getNiceNumber("refining-skill");
+	var refining_efficiency = getNiceNumber("efficiency-skill");
+	var recycling_constant = 0.375;
+	return recycling_constant * (1 + 0.02 * refining_skill) * (1 + 0.04 * refining_efficiency);
 }
 
-// Calculate market values of various ores
-function recalculate()
+// Calculate the refining efficiency for the given ore using the values from the form
+function calculate_efficiency(orename)
 {
-	// Mineral names
-	var minerals = new Array("tritanium","pyerite","mexallon","isogen","nocxium","zydrine","megacyte","morphite");
-	// Ore properties
-	var ores = new Array(
-	{
-		name:"Veldspar",
-		batchsize:333,
-		tritanium:1000,
-		volume:0.1
-	},
-	{
-		name:"Scordite",
-		batchsize:333,
-		tritanium:833,
-		pyerite:416,
-		volume:0.15
-	},
-	{
-		name:"Pyroxeres",
-		batchsize:333,
-		tritanium:844,
-		pyerite:59,
-		mexallon:120,
-		nocxium:11,
-		volume:0.3
-	},
-	{
-		name:"Plagioclase",
-		batchsize:333,
-		tritanium:256,
-		pyerite:512,
-		mexallon:256,
-		volume:0.35
-	},
-	{
-		name:"Omber",
-		batchsize:500,
-		tritanium:307,
-		pyerite:123,
-		isogen:307,
-		volume:0.6
-	},
-	{
-		name:"Kernite",
-		batchsize:400,
-		tritanium:386,
-		mexallon:773,
-		isogen:386,
-		volume:1.2
-	},
-	{
-		name:"Jaspet",
-		batchsize:500,
-		tritanium:259,
-		pyerite:259,
-		mexallon:518,
-		nocxium:259,
-		zydrine:8,
-		volume:2
-	},
-	{
-		name:"Hemorphite",
-		batchsize:500,
-		tritanium:212,
-		isogen:212,
-		nocxium:424,
-		zydrine:28,
-		volume:3
-	},
-	{
-		name:"Hedbergite",
-		batchsize:500,
-		isogen:708,
-		nocxium:354,
-		zydrine:32,
-		volume:3
-	},
-	{
-		name:"Gneiss",
-		batchsize:400,
-		tritanium:171,
-		mexallon:171,
-		isogen:343,
-		zydrine:171,
-		volume:5
-	},
-	{
-		name:"Dark Ochre",
-		batchsize:400,
-		tritanium:250,
-		nocxium:500,
-		zydrine:250,
-		volume:8
-	},
-	{
-		name:"Crokite",
-		batchsize:250,
-		tritanium:331,
-		nocxium:331,
-		zydrine:663,
-		volume:16
-	},
-	{
-		name:"Spodumain",
-		batchsize:250,
-		tritanium:700,
-		pyerite:140,
-		megacyte:140,
-		volume:16
-	},
-	{
-		name:"Bistot",
-		batchsize:200,
-		pyerite:170,
-		zydrine:341,
-		megacyte:170,
-		volume:16
-	},
-	{
-		name:"Arkonor",
-		batchsize:200,
-		tritanium:300,
-		zydrine:166,
-		megacyte:333,
-		volume:16
-	},
-	{
-		name:"Mercoxit",
-		batchsize:250,
-		morphite:530,
-		volume:40
-	}
-	);
-	// Compound properties
-	var compounds = new Array(
-	{
-		name:"Condensed Alloy",
-		batchsize:1,
-		tritanium:88,
-		pyerite:44,
-		mexallon:11,
-		volume:1
-	},
-	{
-		name:"Crystal Compound",
-		batchsize:1,
-		mexallon:11,
-		isogen:2,
-		volume:1
-	},
-	{
-		name:"Precious Alloy",
-		batchsize:1,
-		pyerite:7,
-		isogen:18,
-		volume:1
-	},
-	{
-		name:"Sheen Compound",
-		batchsize:1,
-		tritanium:124,
-		pyerite:44,
-		isogen:23,
-		nocxium:1,
-		volume:1
-	},
-	{
-		name:"Gleaming Alloy",
-		batchsize:1,
-		tritanium:299,
-		nocxium:5,
-		volume:1
-	},
-	{
-		name:"Lucent Compound",
-		batchsize:1,
-		pyerite:174,
-		mexallon:2,
-		isogen:11,
-		nocxium:5,
-		volume:1
-	},
-	{
-		name:"Dark Compound",
-		batchsize:1,
-		isogen:23,
-		nocxium:10,
-		volume:1
-	},
-	{
-		name:"Motley Compound",
-		batchsize:1,
-		isogen:28,
-		nocxium:13,
-		volume:1
-	},
-	{
-		name:"Lustering Alloy",
-		batchsize:1,
-		mexallon:88,
-		isogen:32,
-		nocxium:35,
-		zydrine:1,
-		volume:1
-	},
-	{
-		name:"Glossy Compound",
-		batchsize:1,
-		mexallon:210,
-		nocxium:4,
-		megacyte:3,
-		volume:1
-	},
-	{
-		name:"Plush Compound",
-		batchsize:1,
-		tritanium:3200,
-		pyerite:800,
-		isogen:20,
-		zydrine:9,
-		volume:1
-	},
-	{
-		name:"Opulent Compound",
-		batchsize:1,
-		morphite:2,
-		volume:1
-	}
-	);
-	// Ice properties
+	var facility_efficiency = getNiceNumber("facility-efficiency");
+	var standing = getNiceNumber("facility-standing");
 	
-	// Normalize the ores, compounds, etc. so that minerals with an undefined yield are defined to have a yield of zero
-	for(var j = 0; j < minerals.length; j++)
-	{
-		var mineral = minerals[j];
-		// Ores
-		for(var i = 0; i < ores.length; i++)
-		{
-			if(ores[i][mineral] === undefined)
-			{
-				ores[i][mineral] = 0;
-			}
-		}
-		// Compounds
-		for(var i = 0; i < compounds.length; i++)
-		{
-			if(compounds[i][mineral] === undefined)
-			{
-				compounds[i][mineral] = 0;
-			}
-		}
-	}
-	// Get the prices from the form
-	var market = getPrices();
+	var tax = Math.max((0.05 * ((20/3) - standing))*(3/20),0);
+	// Display the effective facility efficiency to the user
+	document.getElementById("facility").getElementsByTagName("h2")[0].innerHTML = "Facility [+" + Math.round((facility_efficiency - tax) * 1000)/10 + "%]";
 	
-	// Calculate efficiency; default is 100% if the user does not specify any skills
-	var base_efficiency = 1;
-	var efficiency = {};
-	for(var o in ores)
-	{
-		efficiency[ores[o].name] = 1;
-	}
-	// Determine whether or not to take player skills into account for yield calculations
-	if(document.getElementById("advanced").style.display == "block")
-	{
-		var refining_skill = getNiceNumber("refining-skill");
-		var refining_efficiency = getNiceNumber("efficiency-skill");
-		var facility_efficiency = getNiceNumber("facility-efficiency");
-		var standing = getNiceNumber("facility-standing");
-		
-		var tax = Math.max((0.05 * ((20/3) - standing))*(3/20),0);
-		// Display the effective facility efficiency to the user
-		document.getElementById("facility").getElementsByTagName("h2")[0].innerHTML = "Facility [+" + Math.round((facility_efficiency - tax) * 1000)/10 + "%]";
-		
-		var player_efficiency = 0.375 * (1 + 0.02 * refining_skill) * (1 + 0.04 * refining_efficiency);
-		// Display the effective player efficiency to the user
-		document.getElementById("skills").getElementsByTagName("h2")[0].innerHTML = "Skills [+" + Math.round(player_efficiency * 1000)/10 + "%]";
-		
-		base_efficiency = facility_efficiency + player_efficiency;
-		for(var o in ores)
-		{
-			var name = ores[o].name;
-			var ore_skill = getNiceNumber(name.toLowerCase() + "-skill");
-			efficiency[name] = Math.min(facility_efficiency + player_efficiency * (1 + 0.05 * ore_skill),1) - tax;
-		}
-	}
-	document.getElementById("estimated-efficiency").innerHTML = "Estimated Base Refining Efficiency: " + Math.round(base_efficiency * 1000)/10 + "%";
-	// Write data to table
+	var player_efficiency = calculate_player_efficiency();
+	// Display the effective player efficiency to the user
+	document.getElementById("skills").getElementsByTagName("h2")[0].innerHTML = "Skills [+" + Math.round(player_efficiency * 1000)/10 + "%]";
+	
+	var ore_skill = getNiceNumber(orename.toLowerCase() + "-skill");
+	return Math.min(facility_efficiency + player_efficiency * (1 + 0.05 * ore_skill),1) - tax;
+}
+
+// Re-write the price table
+function write_ore_prices(ores)
+{
 	var table = document.getElementById("ores");
 	// Empty table and rewrite header
-	var html = "<thead><tr><th>Ore</th><th>Batch Size</th><th>Tritanium</th><th>Pyerite</th><th>Mexallon</th><th>Isogen</th><th>Nocxium</th><th>Zydrine</th><th>Megacyte</th><th>Morphite</th><th>ISK/m<sup>3</sup> (Raw)</th><th>ISK/m<sup>3</sup> (Refined)</th></tr></thead><tbody>";
+	var html = "<thead><tr><th>Ore</th><th>Batch Size</th><th>Tritanium</th><th>Pyerite</th><th>Mexallon</th><th>Isogen</th><th>Nocxium</th><th>Zydrine</th><th>Megacyte</th><th>Morphite</th><th>ISK/m<sup>3</sup><br />(Raw)</th><th>ISK/m<sup>3</sup><br />(Refined)</th></tr></thead><tbody>";
 	// Iterate over ores and add values to table
 	for(var i = 0; i < ores.length; i++)
 	{
-		var e = efficiency[ores[i].name];
-		// Apply efficiency
-		for(var j = 0; j < minerals.length; j++)
-		{
-			var mineral = minerals[j];
-			ores[i][mineral] = Math.ceil(ores[i][mineral] * e);
-		}
-		var rawprice = getNiceNumber(ores[i].name.toLowerCase() + "-price");
-		var rawiskperm3 = moneyFormat(rawprice / ores[i].volume);
-		var iskperm3 = moneyFormat(calculateISKperm3(market, ores[i]));
+		html += "<tbody>";
 		html += "<tr>";
 		html += "<td>" + ores[i].name + "</td>";
+		// Base ore
 		html += "<td>" + ores[i].batchsize + "</td>";
 		html += "<td>" + ores[i].tritanium + "</td>";
 		html += "<td>" + ores[i].pyerite + "</td>";
@@ -620,20 +338,53 @@ function recalculate()
 		html += "<td>" + ores[i].zydrine + "</td>";
 		html += "<td>" + ores[i].megacyte + "</td>";
 		html += "<td>" + ores[i].morphite + "</td>";
-		html += "<td>" + rawiskperm3 + "</td>";
-		html += "<td>" + iskperm3 + "</td>";
+		html += "<td>" + ores[i].rawPricePerm3 + "</td>";
+		html += "<td>" + ores[i].refinedPricePerm3 + "</td>";
 		html += "</tr>";
+		// +5% variant
+		html += "<tr>";
+		html += "<td>" + ores[i].plus5 + " " + ores[i].name + "</td>";
+		html += "<td>" + Math.round(ores[i].batchsize * 1.05) + "</td>";
+		html += "<td>" + Math.round(ores[i].tritanium * 1.05) + "</td>";
+		html += "<td>" + Math.round(ores[i].pyerite * 1.05) + "</td>";
+		html += "<td>" + Math.round(ores[i].mexallon * 1.05) + "</td>";
+		html += "<td>" + Math.round(ores[i].isogen * 1.05) + "</td>";
+		html += "<td>" + Math.round(ores[i].nocxium * 1.05) + "</td>";
+		html += "<td>" + Math.round(ores[i].zydrine * 1.05) + "</td>";
+		html += "<td>" + Math.round(ores[i].megacyte * 1.05) + "</td>";
+		html += "<td>" + Math.round(ores[i].morphite * 1.05) + "</td>";
+		html += "<td>" + ores[i].rawPlus5PricePerm3 + "</td>";
+		html += "<td>" + moneyFormat(ores[i].refinedPricePerm3 * 1.05) + "</td>";
+		html += "</tr>";
+		// +10% variant
+		html += "<tr>";
+		html += "<td>" + ores[i].plus10 + " " + ores[i].name + "</td>";
+		html += "<td>" + Math.round(ores[i].batchsize * 1.1) + "</td>";
+		html += "<td>" + Math.round(ores[i].tritanium * 1.1) + "</td>";
+		html += "<td>" + Math.round(ores[i].pyerite * 1.1) + "</td>";
+		html += "<td>" + Math.round(ores[i].mexallon * 1.1) + "</td>";
+		html += "<td>" + Math.round(ores[i].isogen * 1.1) + "</td>";
+		html += "<td>" + Math.round(ores[i].nocxium * 1.1) + "</td>";
+		html += "<td>" + Math.round(ores[i].zydrine * 1.1) + "</td>";
+		html += "<td>" + Math.round(ores[i].megacyte * 1.1) + "</td>";
+		html += "<td>" + Math.round(ores[i].morphite * 1.1) + "</td>";
+		html += "<td>" + ores[i].rawPlus10PricePerm3 + "</td>";
+		html += "<td>" + moneyFormat(ores[i].refinedPricePerm3 * 1.1) + "</td>";
+		html += "</tr>";
+		html += "</tbody>";
 	}
 	html += "</tbody>";
 	table.innerHTML = html;
-	
-	// Rewrite compounds table
-	table = document.getElementById("compounds");
+}
+
+// Rewrite compounds table
+function write_compound_prices(compounds)
+{
+	var table = document.getElementById("compounds");
 	var html = "<thead><tr><th>Compound</th><th>Batch Size</th><th>Tritanium</th><th>Pyerite</th><th>Mexallon</th><th>Isogen</th><th>Nocxium</th><th>Zydrine</th><th>Megacyte</th><th>Morphite</th><th>ISK/m<sup>3</sup> (Raw)</th><th>ISK/m<sup>3</sup> (Refined)</th></tr></thead><tbody>";
 	// Iterate over compounds and add values to table
 	for(var i = 0; i < compounds.length; i++)
 	{
-		var iskperm3 = moneyFormat(calculateISKperm3(market, compounds[i]));
 		html += "<tr>";
 		html += "<td>" + compounds[i].name + "</td>";
 		html += "<td>" + compounds[i].batchsize + "</td>";
@@ -645,13 +396,61 @@ function recalculate()
 		html += "<td>" + compounds[i].zydrine + "</td>";
 		html += "<td>" + compounds[i].megacyte + "</td>";
 		html += "<td>" + compounds[i].morphite + "</td>";
-		html += "<td>" + iskperm3 + "</td>";
-		html += "<td>" + iskperm3 + "</td>";
+		html += "<td>" + compounds[i].pricePerm3 + "</td>";
+		html += "<td>" + compounds[i].pricePerm3 + "</td>";
 		html += "</tr>";
 	}
 	html += "</tbody>";
 	table.innerHTML = html;
+}
+
+// Calculate market values of various ores
+function recalculate()
+{
+	// Get information about the game items
+	var minerals = get_mineral_names();
+	var ores = get_ore_objects();
+	var compounds = get_compound_objects();
 	
+	// Get the prices from the form
+	var market = getPrices();
+	var base_efficiency = calculate_player_efficiency() + getNiceNumber("facility-efficiency");
+	// Calculate efficiencies and prices and normalize the ores, compounds, etc. so that minerals with an undefined yield are defined to have a yield of zero
+	for(var j = 0; j < minerals.length; j++)
+	{
+		var mineral = minerals[j];
+		// Ores
+		for(var i = 0; i < ores.length; i++)
+		{
+			if(ores[i][mineral] === undefined)
+			{
+				ores[i][mineral] = 0;
+			}
+			ores[i][mineral] = Math.ceil(ores[i][mineral] * calculate_efficiency(ores[i].name));
+			// Calculate gross and net price
+			var price = getNiceNumber(ores[i].name.toLowerCase() + "-price");
+			calculateVolumetricPrices(market, ores[i]);
+			//ores[i].rawPricePerm3 = moneyFormat(price / ores[i].volume);
+			//ores[i].refinedPricePerm3 = moneyFormat(calculateISKperm3(market, ores[i]));
+		}
+		// Compounds
+		for(var i = 0; i < compounds.length; i++)
+		{
+			if(compounds[i][mineral] === undefined)
+			{
+				compounds[i][mineral] = 0;
+			}
+			compounds[i].pricePerm3 = moneyFormat(calculateISKperm3(market, compounds[i]));
+		}
+	}
+	
+	document.getElementById("estimated-efficiency").innerHTML = "Estimated Base Refining Efficiency: " + Math.round(base_efficiency * 10000)/100 + "%";
+	// Write data to table
+	write_ore_prices(ores);
+	write_compound_prices(compounds);
 	// Make tables sortable again
 	sortables_init();
+
+	// Update the page status
+	updateStatus("Ready.","ok");
 }
