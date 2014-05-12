@@ -3,11 +3,24 @@
 // JavaScript Document
 "use strict";
 
+// A $ function inspired by JQuery. Doesn't do anything fancy; just saves space.
+function $(descriptor)
+{
+	// Get by ID
+	if(descriptor[0] === "#")
+		return document.getElementById(descriptor.substring(1));
+	// Get by class name
+	if(descriptor[0] === ".")
+		return document.getElementsByClassName(descriptor.substring(1));
+
+	return null;
+}
+
 // Make the selected tab visible and hide the others
 function changeTab(tabid)
 {
 	var tab = document.getElementById(tabid);
-	var tabs = document.getElementsByClassName("tab");
+	var tabs = $(".tab");
 	// Hide all tabs
 	if(tabs)
 	{
@@ -92,8 +105,8 @@ function getNiceNumber(element_id)
 // Update the page status (for use with AJAX requests)
 function updateStatus(status_string, status_class)
 {
-	document.getElementById("page-status").innerHTML = status_string;
-	document.getElementById("page-status").className = status_class;
+	$("#page-status").innerHTML = status_string;
+	$("#page-status").className = status_class;
 }
 
 // Round to the neareast 0.01
@@ -202,7 +215,7 @@ function populateMarketData()
 	{
 		post_data += "typeid=" + types[i].id + "&";
 	}
-	post_data += "regionlimit=" + document.getElementById("eve-central-region").value;
+	post_data += "regionlimit=" + $("#eve-central-region").value;
 	
 	// Connect to the API server and send some headers and a POST request
 	updateStatus("Loading Price Data...","busy");
@@ -229,11 +242,11 @@ function calculate_efficiency(orename)
 	
 	var tax = Math.max((0.05 * ((20/3) - standing))*(3/20),0);
 	// Display the effective facility efficiency to the user
-	document.getElementById("facility").getElementsByTagName("h2")[0].innerHTML = "Facility [+" + Math.round((facility_efficiency - tax) * 1000)/10 + "%]";
+	$("#facility").getElementsByTagName("h2")[0].innerHTML = "Facility [+" + Math.round((facility_efficiency - tax) * 1000)/10 + "%]";
 	
 	var player_efficiency = calculate_player_efficiency();
 	// Display the effective player efficiency to the user
-	document.getElementById("skills").getElementsByTagName("h2")[0].innerHTML = "Skills [+" + Math.round(player_efficiency * 1000)/10 + "%]";
+	$("#skills").getElementsByTagName("h2")[0].innerHTML = "Skills [+" + Math.round(player_efficiency * 1000)/10 + "%]";
 	
 	var ore_skill = getNiceNumber(orename.toLowerCase() + "-skill");
 	return Math.min(facility_efficiency + player_efficiency * (1 + 0.05 * ore_skill),1) - tax;
@@ -242,7 +255,7 @@ function calculate_efficiency(orename)
 // Re-write the price table
 function write_ore_prices(ores)
 {
-	var table = document.getElementById("ores");
+	var table = $("#ores");
 	// Empty table and rewrite header
 	var html = "<thead><tr><th>Ore</th><th>Batch Size</th><th>Tritanium</th><th>Pyerite</th><th>Mexallon</th><th>Isogen</th><th>Nocxium</th><th>Zydrine</th><th>Megacyte</th><th>Morphite</th><th>ISK/m<sup>3</sup><br />(Raw)</th><th>ISK/m<sup>3</sup><br />(Refined)</th></tr></thead><tbody>";
 	// Iterate over ores and add values to table
@@ -303,7 +316,7 @@ function write_ore_prices(ores)
 // Rewrite compounds table
 function write_compound_prices(compounds)
 {
-	var table = document.getElementById("compounds");
+	var table = $("#compounds");
 	var html = "<thead><tr><th>Compound</th><th>Batch Size</th><th>Tritanium</th><th>Pyerite</th><th>Mexallon</th><th>Isogen</th><th>Nocxium</th><th>Zydrine</th><th>Megacyte</th><th>Morphite</th><th>ISK/m<sup>3</sup> (Raw)</th><th>ISK/m<sup>3</sup> (Refined)</th></tr></thead><tbody>";
 	// Iterate over compounds and add values to table
 	for(var i = 0; i < compounds.length; i++)
@@ -364,7 +377,7 @@ function recalculate()
 		}
 	}
 	
-	document.getElementById("estimated-efficiency").innerHTML = "Estimated Base Refining Efficiency: " + Math.round(base_efficiency * 10000)/100 + "%";
+	$("#estimated-efficiency").innerHTML = "Estimated Base Refining Efficiency: " + Math.round(base_efficiency * 10000)/100 + "%";
 	// Write data to table
 	write_ore_prices(ores);
 	write_compound_prices(compounds);
