@@ -234,13 +234,21 @@ function calculate_player_efficiency()
 	return recycling_constant * (1 + 0.02 * refining_skill) * (1 + 0.04 * refining_efficiency);
 }
 
+// Calculate the station tax based on the player's standing
+function calculate_tax()
+{
+	var standing = getNiceNumber("facility-standing");
+	
+	return Math.max((0.05 * ((20/3) - standing))*(3/20),0);
+}
+
 // Calculate the refining efficiency for the given ore using the values from the form
 function calculate_efficiency(orename)
 {
 	var facility_efficiency = getNiceNumber("facility-efficiency");
 	var standing = getNiceNumber("facility-standing");
 	
-	var tax = Math.max((0.05 * ((20/3) - standing))*(3/20),0);
+	var tax = calculate_tax();
 	// Display the effective facility efficiency to the user
 	$("#facility").getElementsByTagName("h2")[0].innerHTML = "Facility [+" + Math.round((facility_efficiency - tax) * 1000)/10 + "%]";
 	
@@ -377,7 +385,7 @@ function recalculate()
 		}
 	}
 	
-	$("#estimated-efficiency").innerHTML = "Estimated Base Refining Efficiency: " + Math.round(base_efficiency * 10000)/100 + "%";
+	$("#efficiency").innerHTML = "Base/Net Refining Efficiency: " + Math.round(base_efficiency * 1000)/10 + "% / " + Math.round((base_efficiency - calculate_tax())*1000)/10 + "%";
 	// Write data to table
 	write_ore_prices(ores);
 	write_compound_prices(compounds);
@@ -387,3 +395,4 @@ function recalculate()
 	// Update the page status
 	updateStatus("Ready.","ok");
 }
+
