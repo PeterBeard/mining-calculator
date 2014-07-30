@@ -66,9 +66,7 @@ function calculateVolumetricPrices(market, ore)
 	// Calculate the base price
 	ore.refinedPricePerm3 = moneyFormat(calculateISKperm3(market, ore));
 	// Get the raw prices for the base ore and the variants
-	ore.rawPricePerm3 = moneyFormat(getNiceNumber(ore.name.toLowerCase() + "-price") / ore.volume);
-	ore.rawPlus5PricePerm3 = moneyFormat(getNiceNumber(ore.plus5.toLowerCase() + "-" + ore.name.toLowerCase() + "-price") / ore.volume);
-	ore.rawPlus10PricePerm3 = moneyFormat(getNiceNumber(ore.plus10.toLowerCase() + "-" + ore.name.toLowerCase() + "-price") / ore.volume);
+	ore.rawPricePerm3 = moneyFormat(getNiceNumber(ore.name.toLowerCase().replace(' ','-') + "-price") / ore.volume);
 }
 
 // Make sure the value returned from a form is a numeric type
@@ -269,7 +267,6 @@ function write_ore_prices(ores)
 	// Iterate over ores and add values to table
 	for(var i = 0; i < ores.length; i++)
 	{
-		html += "<tbody>";
 		html += "<tr>";
 		html += "<td>" + ores[i].name + "</td>";
 		// Base ore
@@ -285,37 +282,6 @@ function write_ore_prices(ores)
 		html += "<td>" + ores[i].rawPricePerm3 + "</td>";
 		html += "<td>" + ores[i].refinedPricePerm3 + "</td>";
 		html += "</tr>";
-		// +5% variant
-		html += "<tr>";
-		html += "<td>" + ores[i].plus5 + " " + ores[i].name + "</td>";
-		html += "<td>" + Math.round(ores[i].batchsize * 1.05) + "</td>";
-		html += "<td>" + Math.round(ores[i].tritanium * 1.05) + "</td>";
-		html += "<td>" + Math.round(ores[i].pyerite * 1.05) + "</td>";
-		html += "<td>" + Math.round(ores[i].mexallon * 1.05) + "</td>";
-		html += "<td>" + Math.round(ores[i].isogen * 1.05) + "</td>";
-		html += "<td>" + Math.round(ores[i].nocxium * 1.05) + "</td>";
-		html += "<td>" + Math.round(ores[i].zydrine * 1.05) + "</td>";
-		html += "<td>" + Math.round(ores[i].megacyte * 1.05) + "</td>";
-		html += "<td>" + Math.round(ores[i].morphite * 1.05) + "</td>";
-		html += "<td>" + ores[i].rawPlus5PricePerm3 + "</td>";
-		html += "<td>" + moneyFormat(ores[i].refinedPricePerm3 * 1.05) + "</td>";
-		html += "</tr>";
-		// +10% variant
-		html += "<tr>";
-		html += "<td>" + ores[i].plus10 + " " + ores[i].name + "</td>";
-		html += "<td>" + Math.round(ores[i].batchsize * 1.1) + "</td>";
-		html += "<td>" + Math.round(ores[i].tritanium * 1.1) + "</td>";
-		html += "<td>" + Math.round(ores[i].pyerite * 1.1) + "</td>";
-		html += "<td>" + Math.round(ores[i].mexallon * 1.1) + "</td>";
-		html += "<td>" + Math.round(ores[i].isogen * 1.1) + "</td>";
-		html += "<td>" + Math.round(ores[i].nocxium * 1.1) + "</td>";
-		html += "<td>" + Math.round(ores[i].zydrine * 1.1) + "</td>";
-		html += "<td>" + Math.round(ores[i].megacyte * 1.1) + "</td>";
-		html += "<td>" + Math.round(ores[i].morphite * 1.1) + "</td>";
-		html += "<td>" + ores[i].rawPlus10PricePerm3 + "</td>";
-		html += "<td>" + moneyFormat(ores[i].refinedPricePerm3 * 1.1) + "</td>";
-		html += "</tr>";
-		html += "</tbody>";
 	}
 	html += "</tbody>";
 	table.innerHTML = html;

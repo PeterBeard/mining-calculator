@@ -51,8 +51,8 @@ function get_type_ids()
 	{id:17865,name:"iridescent-gneiss"},
 	{id:17866,name:"prismatic-gneiss"},
 	{id:1232,name:"dark-ochre"},
-	{id:17436,name:"onyx-dark-ochre"},
-	{id:17437,name:"obsidian-dark-ochre"},
+	{id:17436,name:"onyx-ochre"},
+	{id:17437,name:"obsidian-ochre"},
 	{id:1225,name:"crokite"},
 	{id:17432,name:"sharp-crokite"},
 	{id:17433,name:"crystalline-crokite"},
@@ -77,25 +77,52 @@ function get_ore_objects()
 	return new Array(
 	{
 		name:"Veldspar",
-		plus5:"Concentrated",
-		plus10:"Dense",
+		group: "Veldspar",
 		batchsize:333,
 		tritanium:1000,
 		volume:0.1
 	},
 	{
+		name: "Concentrated Veldspar",
+		group: "Veldspar",
+		batchsize: 333,
+		tritanium: 1050,
+		volume:0.1
+	},
+	{
+		name: "Dense Veldspar",
+		group: "Veldspar",
+		batchsize: 333,
+		tritanium: 1100,
+		volume: 0.1
+	},
+	{
 		name:"Scordite",
-		plus5:"Condensed",
-		plus10:"Massive",
+		group:"Scordite",
 		batchsize:333,
 		tritanium:833,
 		pyerite:416,
 		volume:0.15
 	},
 	{
+		name:"Condensed Scordite",
+		group:"Scordite",
+		batchsize:333,
+		tritanium:875,
+		pyerite:437,
+		volume:0.15
+	},
+	{
+		name:"Massive Scordite",
+		group:"Scordite",
+		batchsize:333,
+		tritanium:916,
+		pyerite:458,
+		volume:0.15
+	},
+	{
 		name:"Pyroxeres",
-		plus5:"Solid",
-		plus10:"Viscous",
+		group:"Pyroxeres",
 		batchsize:333,
 		tritanium:844,
 		pyerite:59,
@@ -104,9 +131,28 @@ function get_ore_objects()
 		volume:0.3
 	},
 	{
+		name:"Solid Pyroxeres",
+		group:"Pyroxeres",
+		batchsize:333,
+		tritanium:886,
+		pyerite:62,
+		mexallon:126,
+		nocxium:12,
+		volume:0.3
+	},
+	{
+		name:"Viscous Pyroxeres",
+		group:"Pyroxeres",
+		batchsize:333,
+		tritanium:928,
+		pyerite:65,
+		mexallon:132,
+		nocxium:12,
+		volume:0.3
+	},
+	{
 		name:"Plagioclase",
-		plus5:"Azure",
-		plus10:"Rich",
+		group:"Plagioclase",
 		batchsize:333,
 		tritanium:256,
 		pyerite:512,
@@ -114,9 +160,26 @@ function get_ore_objects()
 		volume:0.35
 	},
 	{
+		name:"Azure Plagioclase",
+		group:"Plagioclase",
+		batchsize:333,
+		tritanium:269,
+		pyerite:538,
+		mexallon:269,
+		volume:0.35
+	},
+	{
+		name:"Rich Plagioclase",
+		group:"Plagioclase",
+		batchsize:333,
+		tritanium:282,
+		pyerite:563,
+		mexallon:282,
+		volume:0.35
+	},
+	{
 		name:"Omber",
-		plus5:"Silvery",
-		plus10:"Golden",
+		group:"Omber",
 		batchsize:500,
 		tritanium:307,
 		pyerite:123,
@@ -124,9 +187,26 @@ function get_ore_objects()
 		volume:0.6
 	},
 	{
+		name:"Silvery Omber",
+		group:"Omber",
+		batchsize:500,
+		tritanium:322,
+		pyerite:129,
+		isogen:322,
+		volume:0.6
+	},
+	{
+		name:"Golden Omber",
+		group:"Omber",
+		batchsize:500,
+		tritanium:338,
+		pyerite:135,
+		isogen:338,
+		volume:0.6
+	},
+	{
 		name:"Kernite",
-		plus5:"Luminous",
-		plus10:"Fiery",
+		group:"Kernite",
 		batchsize:400,
 		tritanium:386,
 		mexallon:773,
@@ -134,9 +214,26 @@ function get_ore_objects()
 		volume:1.2
 	},
 	{
+		name:"Luminous Kernite",
+		group:"Kernite",
+		batchsize:400,
+		tritanium:405,
+		mexallon:812,
+		isogen:405,
+		volume:1.2
+	},
+	{
+		name:"Fiery Kernite",
+		group:"Kernite",
+		batchsize:400,
+		tritanium: 424,
+		mexallon:850,
+		isogen:425,
+		volume:1.2
+	},
+	{
 		name:"Jaspet",
-		plus5:"Pure",
-		plus10:"Pristine",
+		group:"Jaspet",
 		batchsize:500,
 		tritanium:259,
 		pyerite:259,
@@ -146,9 +243,30 @@ function get_ore_objects()
 		volume:2
 	},
 	{
+		name:"Pure Jaspet",
+		group:"Jaspet",
+		batchsize:500,
+		tritanium:272,
+		pyerite:272,
+		mexallon:544,
+		nocxium:272,
+		zydrine:8,
+		volume:2
+	},
+	{
+		name:"Pristine Jaspet",
+		group:"Jaspet",
+		batchsize:500,
+		tritanium:285,
+		pyerite:285,
+		mexallon:570,
+		nocxium:285,
+		zydrine:9,
+		volume:2
+	},
+	{
 		name:"Hemorphite",
-		plus5:"Vivid",
-		plus10:"Radiant",
+		group:"Hemorphite",
 		batchsize:500,
 		tritanium:212,
 		isogen:212,
@@ -157,9 +275,28 @@ function get_ore_objects()
 		volume:3
 	},
 	{
+		name:"Vivid Hemorphite",
+		group:"Hemorphite",
+		batchsize:500,
+		tritanium:223,
+		isogen:223,
+		nocxium:445,
+		zydrine:29,
+		volume:3
+	},
+	{
+		name:"Radiant Hemorphite",
+		group:"Hemorphite",
+		batchsize:500,
+		tritanium:233,
+		isogen:233,
+		nocxium:466,
+		zydrine:31,
+		volume:3
+	},
+	{
 		name:"Hedbergite",
-		plus5:"Vitric",
-		plus10:"Glazed",
+		group:"Hedbergite",
 		batchsize:500,
 		isogen:708,
 		nocxium:354,
@@ -167,9 +304,26 @@ function get_ore_objects()
 		volume:3
 	},
 	{
+		name:"Vitric Hedbergite",
+		group:"Hedbergite",
+		batchsize:500,
+		isogen:743,
+		nocxium:372,
+		zydrine:34,
+		volume:3,
+	},
+	{
+		name:"Glazed Hedbergite",
+		group:"Hedbergite",
+		batchsize:500,
+		isogen:779,
+		nocxium:389,
+		zydrine:35,
+		volume:3,
+	},
+	{
 		name:"Gneiss",
-		plus5:"Iridescent",
-		plus10:"Prismatic",
+		group:"Gneiss",
 		batchsize:400,
 		tritanium:171,
 		mexallon:171,
@@ -178,9 +332,28 @@ function get_ore_objects()
 		volume:5
 	},
 	{
+		name:"Irridescent Gneiss",
+		group:"Gneiss",
+		batchsize:400,
+		tritanium:180,
+		mexallon:180,
+		isogen:360,
+		zydrine:180,
+		volume:5
+	},
+	{
+		name:"Prismatic Gneiss",
+		group:"Gneiss",
+		batchsize:400,
+		tritanium:188,
+		mexallon:188,
+		isogen:377,
+		zydrine:188,
+		volume:5
+	},
+	{
 		name:"Dark Ochre",
-		plus5:"Onyx",
-		plus10:"Obsidian",
+		group:"Ochre",
 		batchsize:400,
 		tritanium:250,
 		nocxium:500,
@@ -188,9 +361,26 @@ function get_ore_objects()
 		volume:8
 	},
 	{
+		name:"Onyx Ochre",
+		group:"Ochre",
+		batchsize:400,
+		tritanium:264,
+		nocxium:525,
+		zydrine:264,
+		volume:8
+	},
+	{
+		name:"Obsidian Ochre",
+		group:"Ochre",
+		batchsize:400,
+		tritanium:275,
+		nocxium:550,
+		zydrine:275,
+		volume:8
+	},
+	{
 		name:"Crokite",
-		plus5:"Sharp",
-		plus10:"Crystalline",
+		group:"Crokite",
 		batchsize:250,
 		tritanium:331,
 		nocxium:331,
@@ -198,9 +388,26 @@ function get_ore_objects()
 		volume:16
 	},
 	{
+		name:"Sharp Crokite",
+		group:"Crokite",
+		batchsize:250,
+		tritanium:348,
+		nocxium:348,
+		zydrine:696,
+		volume:16
+	},
+	{
+		name:"Crystalline Crokite",
+		group:"Crokite",
+		batchsize:250,
+		tritanium:364,
+		nocxium:364,
+		zydrine:729,
+		volume:16
+	},
+	{
 		name:"Spodumain",
-		plus5:"Bright",
-		plus10:"Gleaming",
+		group:"Spodumain",
 		batchsize:250,
 		tritanium:700,
 		pyerite:140,
@@ -208,9 +415,26 @@ function get_ore_objects()
 		volume:16
 	},
 	{
+		name:"Bright Spodumain",
+		group:"Spodumain",
+		batchsize:250,
+		tritanium:735,
+		pyerite:147,
+		megacyte:147,
+		volume:16
+	},
+	{
+		name:"Gleaming Spodumain",
+		group:"Spodumain",
+		batchsize:250,
+		tritanium:770,
+		pyerite:154,
+		megacyte:154,
+		volume:16
+	},
+	{
 		name:"Bistot",
-		plus5:"Triclinic",
-		plus10:"Monoclinic",
+		group:"Bistot",
 		batchsize:200,
 		pyerite:170,
 		zydrine:341,
@@ -218,9 +442,26 @@ function get_ore_objects()
 		volume:16
 	},
 	{
+		name:"Triclinic Bistot",
+		group:"Bistot",
+		batchsize:200,
+		pyerite:179,
+		zydrine:358,
+		megacyte:179,
+		volume:16
+	},
+	{
+		name:"Monoclinic Bistot",
+		group:"Bistot",
+		batchsize:200,
+		pyerite:187,
+		zydrine:375,
+		megacyte:187,
+		volume:16
+	},
+	{
 		name:"Arkonor",
-		plus5:"Crimson",
-		plus10:"Prime",
+		group:"Arkonor",
 		batchsize:200,
 		tritanium:300,
 		zydrine:166,
@@ -228,11 +469,42 @@ function get_ore_objects()
 		volume:16
 	},
 	{
+		name:"Crimson Arkonor",
+		group:"Arkonor",
+		batchsize:200,
+		tritanium:315,
+		zydrine:174,
+		megacyte:350,
+		volume:16
+	},
+	{
+		name:"Prime Arkonor",
+		group:"Arkonor",
+		batchsize:200,
+		tritanium:330,
+		zydrine:183,
+		megacyte:366,
+		volume:16
+	},
+	{
 		name:"Mercoxit",
-		plus5:"Magma",
-		plus10:"Vitreous",
+		group:"Mercoxit",
 		batchsize:250,
 		morphite:530,
+		volume:40
+	},
+	{
+		name:"Magma Mercoxit",
+		group:"Mercoxit",
+		batchsize:250,
+		morphite:557,
+		volume:40
+	},
+	{
+		name:"Vitreous Mercoxit",
+		group:"Mercoxit",
+		batchsize:250,
+		morphite:583,
 		volume:40
 	}
 	);
