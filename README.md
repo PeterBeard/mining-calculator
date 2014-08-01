@@ -3,6 +3,13 @@ mining-calculator
 
 A spreadsheet calculator for various mining-related calculations in EVE Online.
 
+Installation
+------------
+
+No installation is required. Just download all the files (or throw them on a server somewhere) and open `orecalc.html` in your favorite browser.
+
+The JavaScript works fine in all modern browsers, but if you're using something old or weird and things aren't working correctly please file a bug report so I can at least try to fix it.
+
 Mining Yields
 -------------
 Currently calculates ISK per cubic meter for raw and refined ores. The calculation for raw ores is simply based on the market price and the volume, but calculating refining yield requires this formula:
