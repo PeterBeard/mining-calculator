@@ -336,7 +336,7 @@ function recalculate()
 			{
 				ores[o][mineral] = 0;
 			}
-			ores[o][mineral] = Math.floor(ores[o][mineral] * calculate_efficiency(ores[o].name));
+			ores[o][mineral] = Math.floor(ores[o][mineral] * calculate_efficiency(ores[o].group));
 			// Calculate raw and refined prices
 			calculateVolumetricPrices(market, ores[o]);
 		}
