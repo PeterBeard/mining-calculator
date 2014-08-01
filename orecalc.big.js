@@ -228,16 +228,16 @@ function calculate_player_efficiency()
 {
 	var refining_skill = getNiceNumber("refining-skill");
 	var refining_efficiency = getNiceNumber("efficiency-skill");
-	var recycling_constant = 0.375;
-	return recycling_constant * (1 + 0.02 * refining_skill) * (1 + 0.04 * refining_efficiency);
+
+	return (1 + 0.03 * refining_skill) * (1 + 0.02 * refining_efficiency);
 }
 
-// Calculate the station tax based on the player's standing
+// Calculate the station tax multiplier based on the player's standing
 function calculate_tax()
 {
 	var standing = getNiceNumber("facility-standing");
 	
-	return Math.max((0.05 * ((20/3) - standing))*(3/20),0);
+	return 1 - (5 - (0.75 * standing))/100;
 }
 
 // Calculate the refining efficiency for the given ore using the values from the form
@@ -248,14 +248,14 @@ function calculate_efficiency(orename)
 	
 	var tax = calculate_tax();
 	// Display the effective facility efficiency to the user
-	$("#facility").getElementsByTagName("h2")[0].innerHTML = "Facility [+" + Math.round((facility_efficiency - tax) * 1000)/10 + "%]";
+	$("#facility").getElementsByTagName("h2")[0].innerHTML = "Facility [+" + Math.round((facility_efficiency * tax) * 1000)/10 + "%]";
 	
 	var player_efficiency = calculate_player_efficiency();
 	// Display the effective player efficiency to the user
-	$("#skills").getElementsByTagName("h2")[0].innerHTML = "Skills [+" + Math.round(player_efficiency * 1000)/10 + "%]";
+	$("#skills").getElementsByTagName("h2")[0].innerHTML = "Skills [+" + Math.round(player_efficiency * 100)/100 + "x]";
 	
 	var ore_skill = getNiceNumber(orename.toLowerCase() + "-skill");
-	return Math.min(facility_efficiency + player_efficiency * (1 + 0.05 * ore_skill),1) - tax;
+	return Math.min(facility_efficiency * player_efficiency * (1 + 0.02 * ore_skill),1) * tax;
 }
 
 // Re-write the price table
@@ -324,7 +324,7 @@ function recalculate()
 	
 	// Get the prices from the form
 	var market = getPrices();
-	var base_efficiency = calculate_player_efficiency() + getNiceNumber("facility-efficiency");
+	var base_efficiency = calculate_player_efficiency() * getNiceNumber("facility-efficiency");
 	// Calculate efficiencies and prices and normalize the ores, compounds, etc. so that minerals with an undefined yield are defined to have a yield of zero
 	for(var j = 0; j < minerals.length; j++)
 	{
@@ -336,7 +336,7 @@ function recalculate()
 			{
 				ores[o][mineral] = 0;
 			}
-			ores[o][mineral] = Math.ceil(ores[o][mineral] * calculate_efficiency(ores[o].name));
+			ores[o][mineral] = Math.floor(ores[o][mineral] * calculate_efficiency(ores[o].name));
 			// Calculate raw and refined prices
 			calculateVolumetricPrices(market, ores[o]);
 		}
@@ -351,7 +351,7 @@ function recalculate()
 		}
 	}
 	
-	$("#efficiency").innerHTML = "Base/Net Refining Efficiency: " + Math.round(base_efficiency * 1000)/10 + "% / " + Math.round((base_efficiency - calculate_tax())*1000)/10 + "%";
+	$("#efficiency").innerHTML = "Base/Net Refining Efficiency: " + Math.round(base_efficiency * 1000)/10 + "% / " + Math.round((base_efficiency * calculate_tax())*1000)/10 + "%";
 	// Write data to table
 	write_ore_prices(ores);
 	write_compound_prices(compounds);
